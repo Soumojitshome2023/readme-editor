@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './index.css';
 
 // Basic Markdown Renderer
 function renderMarkdown(text) {

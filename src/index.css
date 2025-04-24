@@ -1,24 +1,46 @@
 body {
   margin: 0;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #f3f3f3;
 }
 
-h1 {
+/* h1 {
   text-align: center;
-  margin-top: 1rem;
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre,
+ul,
+ol,
+hr,
+blockquote,
+li,
+strong,
+em,
+del,
+br {
+  margin: 0;
 }
 
+
 .container {
-  padding: 1rem;
+  /* padding: 1rem; */
   max-width: 1200px;
   margin: auto;
 }
 
 .columns {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 2px;
+  flex-direction: column;
+  /* flex-wrap: column; */
 }
 
 .card {
@@ -48,5 +70,5 @@ pre {
 
 .rich {
   border-top: 1px solid #ddd;
-  padding-top: 1rem;
+  padding-top: 1px;
 }
