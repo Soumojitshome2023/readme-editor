@@ -5,31 +5,71 @@ import './index.css';
 function renderMarkdown(text) {
   let html = text;
 
+  // Escape HTML
+  // html = html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // Code blocks (```code```)
+  html = html.replace(/```(?:\w+)?\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
   // Headings
-  html = html.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
-  html = html.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
-  html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
-  html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-  html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-  html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+  html = html.replace(/^###### (.*)$/gm, '<h6>$1</h6>');
+  html = html.replace(/^##### (.*)$/gm, '<h5>$1</h5>');
+  html = html.replace(/^#### (.*)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.*)$/gm, '<h1>$1</h1>');
 
-  // Bold **text**
-  html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+  // Horizontal rules
+  html = html.replace(/^(-{3,}|\*{3,}|_{3,})$/gm, '<hr>');
 
-  // Italic *text*
-  html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+  // Blockquotes
+  html = html.replace(/^> (.*)$/gm, '<blockquote>$1</blockquote>');
 
-  // Inline Code `code`
-  html = html.replace(/`([^`]+)`/gim, '<code>$1</code>');
+  // Task Lists
+  html = html.replace(/^- \[ \] (.*)$/gm, '<input type="checkbox" disabled> $1');
+  html = html.replace(/^- \[x\] (.*)$/gim, '<input type="checkbox" disabled checked> $1');
 
-  // Links [text](url)
-  html = html.replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2" target="_blank">$1</a>');
+  // Ordered Lists
+  html = html.replace(/^\d+\. (.*)/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>)/gm, '<ol>$1</ol>');
+  html = html.replace(/<\/ol>\s*<ol>/g, '');
 
-  // New lines to <br>
+  // Unordered Lists
+  html = html.replace(/^[-*+] (.*)/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>)/gm, '<ul>$1</ul>');
+  html = html.replace(/<\/ul>\s*<ul>/g, '');
+
+  // Bold + Italic
+  html = html.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
+
+  // Bold
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // Italic
+  html = html.replace(/(\s|\A)\*(.*?)\*(\s|\Z)/g, '$1<em>$2</em>$3');
+  html = html.replace(/_(.*?)_/g, '<em>$1</em>');
+
+  // Strikethrough
+  html = html.replace(/~~(.*?)~~/g, '<del>$1</del>');
+
+  // Images
+  html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />');
+
+  // Links
+  html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+
+  // Line breaks
+  html = html.replace(/\n{2,}/g, '<br><br>');
   html = html.replace(/\n/g, '<br>');
 
   return html.trim();
 }
+
+
 
 export default function App() {
   const [markdown, setMarkdown] = useState(`# Hello 👋\n\nThis is a **README Editor** with *no libraries*!`);
